@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Mail, Lock, Eye, EyeOff, Zap, ArrowLeft } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, Zap, ArrowLeft, Camera } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import './LoginPage.css';
 
@@ -10,7 +10,8 @@ export const LoginPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { login } = useAuth();
+  const [showFaceLogin, setShowFaceLogin] = useState(false);
+  const { login, loginWithFace } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -25,6 +26,19 @@ export const LoginPage: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleFaceLogin = () => {
+    if (!email.trim()) {
+      alert('Por favor ingresa tu correo electrónico primero');
+      return;
+    }
+    // Redirect directly to face login page instead of showing modal
+    navigate(`/face-login?email=${encodeURIComponent(email)}`);
+  };
+
+  const handleFaceLoginClose = () => {
+    setShowFaceLogin(false);
   };
 
   return (
@@ -134,6 +148,17 @@ export const LoginPage: React.FC = () => {
                 'Iniciar Sesión'
               )}
             </button>
+
+            {/* Face Login Button */}
+            <button
+              type="button"
+              onClick={handleFaceLogin}
+              className="login-page__face-login-button"
+              disabled={isLoading}
+            >
+              <Camera size={18} />
+              Acceder con Reconocimiento Facial
+            </button>
           </form>
 
           {/* Sign up link */}
@@ -147,6 +172,8 @@ export const LoginPage: React.FC = () => {
           </div>
         </div>
       </motion.div>
+
+      {/* Face Login Modal - Removed in favor of direct redirection */}
     </div>
   );
 };

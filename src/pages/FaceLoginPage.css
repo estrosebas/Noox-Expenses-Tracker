@@ -1,0 +1,7 @@
+.face-login-page {
+  min-height: 100vh;
+  background: linear-gradient(to bottom right, #111827, #581c87, #111827);
+  padding: 16px;
+  width: 100%;
+  overflow: auto;
+}
