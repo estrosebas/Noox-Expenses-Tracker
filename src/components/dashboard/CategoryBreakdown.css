@@ -1,0 +1,123 @@
+.breakdown-container {
+  background-color: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 0.75rem;
+  padding: 1rem;
+}
+
+@media (min-width: 1024px) {
+  .breakdown-container {
+    padding: 1.5rem;
+  }
+}
+
+.breakdown-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.breakdown-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: white;
+}
+
+@media (min-width: 1024px) {
+  .breakdown-title {
+    font-size: 1.25rem;
+  }
+}
+
+.breakdown-period {
+  font-size: 0.875rem;
+  color: #9ca3af;
+}
+
+.breakdown-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+@media (min-width: 1280px) {
+  .breakdown-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.breakdown-chart {
+  height: 12rem;
+}
+
+@media (min-width: 1024px) {
+  .breakdown-chart {
+    height: 16rem;
+  }
+}
+
+.category-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.category-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(55, 65, 81, 0.5);
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+}
+
+@media (min-width: 1024px) {
+  .category-item {
+    padding: 0.75rem;
+  }
+}
+
+.category-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.category-dot {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 9999px;
+}
+
+.category-name {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #d1d5db;
+}
+
+@media (min-width: 1024px) {
+  .category-name {
+    font-size: 0.875rem;
+  }
+}
+
+.category-stats {
+  text-align: right;
+}
+
+.amount {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: white;
+}
+
+@media (min-width: 1024px) {
+  .amount {
+    font-size: 0.875rem;
+  }
+}
+
+.percentage {
+  font-size: 0.75rem;
+  color: #9ca3af;
+}

@@ -1,0 +1,536 @@
+/* Settings Component Styles - Similar to Sidebar Layout */
+.settings-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-height: 0;
+  flex: 1;
+}
+
+/* Header Styles */
+.settings-header {
+  background-color: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+}
+
+.settings-header-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.settings-icon-container {
+  width: 2.5rem;
+  height: 2.5rem;
+  background: linear-gradient(to right, #06b6d4, #9333ea);
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.settings-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+}
+
+@media (min-width: 1024px) {
+  .settings-title {
+    font-size: 2rem;
+  }
+}
+
+.settings-subtitle {
+  color: #9ca3af;
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+/* Main Grid Layout - Similar to Sidebar Structure */
+.settings-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  min-height: 0;
+  flex: 1;
+}
+
+@media (min-width: 1024px) {
+  .settings-grid {
+    grid-template-columns: 256px 1fr; /* Fixed width like sidebar */
+  }
+}
+
+/* Sidebar Styles - Mimicking Main Sidebar */
+.settings-sidebar {
+  grid-column: span 1;
+}
+
+.settings-sidebar-container {
+  background-color: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  height: fit-content;
+}
+
+@media (min-width: 1024px) {
+  .settings-sidebar-container {
+    position: sticky;
+    top: 0;
+    height: fit-content;
+    border-right: 1px solid #374151;
+  }
+}
+
+/* Navigation Styles - Similar to Main Sidebar Navigation */
+.settings-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Mobile Navigation - Horizontal scroll like original sidebar mobile version */
+.settings-nav-mobile {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+}
+
+.settings-nav-mobile::-webkit-scrollbar {
+  height: 4px;
+}
+
+.settings-nav-mobile::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.settings-nav-mobile::-webkit-scrollbar-thumb {
+  background-color: rgba(156, 163, 175, 0.5);
+  border-radius: 2px;
+}
+
+@media (min-width: 1024px) {
+  .settings-nav-mobile {
+    display: none;
+  }
+}
+
+/* Desktop Navigation - Vertical like main sidebar */
+.settings-nav-desktop {
+  display: none;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+@media (min-width: 1024px) {
+  .settings-nav-desktop {
+    display: flex;
+  }
+}
+
+/* Navigation Buttons - Styled like main sidebar buttons */
+.settings-nav-button {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  background: none;
+  color: #e5e7eb; /* Similar to main sidebar text color */
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  width: 100%;
+}
+
+.settings-nav-button:hover {
+  background-color: #374151;
+  color: #ffffff;
+  background-image: linear-gradient(to right, rgba(6, 182, 212, 0.2), rgba(147, 51, 234, 0.2));
+}
+
+.settings-nav-button.active {
+  background: linear-gradient(to right, #06b6d4, #9333ea);
+  color: #ffffff;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Mobile Navigation Buttons */
+.settings-nav-button-mobile {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  background: rgba(55, 65, 81, 0.5);
+  color: #d1d5db;
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.settings-nav-button-mobile:hover {
+  background-color: #374151;
+  color: #ffffff;
+}
+
+.settings-nav-button-mobile.active {
+  background: linear-gradient(to right, #06b6d4, #9333ea);
+  color: #ffffff;
+}
+
+/* Icons */
+.settings-nav-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+}
+
+.settings-nav-icon-mobile {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+}
+
+/* Content Area */
+.settings-content {
+  grid-column: span 1;
+}
+
+.settings-content-container {
+  background-color: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
+/* Form Styles */
+.settings-form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .settings-form-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.settings-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.settings-form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #d1d5db;
+  margin-bottom: 0.5rem;
+}
+
+.settings-form-input-container {
+  position: relative;
+}
+
+.settings-form-input, .settings-form-select {
+  width: 100%;
+  padding: 0.5rem 1rem 0.5rem 2.5rem;
+  background-color: #374151;
+  border: 1px solid #4b5563;
+  border-radius: 0.5rem;
+  color: #ffffff;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.settings-form-input:focus, .settings-form-select:focus {
+  outline: none;
+  border-color: #06b6d4;
+  box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.3);
+}
+
+.settings-form-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1rem;
+  height: 1rem;
+  color: #9ca3af;
+}
+
+/* Notification Styles */
+.settings-notification-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.settings-notification-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background-color: rgba(55, 65, 81, 0.5);
+  border-radius: 0.5rem;
+}
+
+.settings-notification-info h4 {
+  color: #ffffff;
+  font-weight: 500;
+  margin: 0 0 0.25rem 0;
+}
+
+.settings-notification-info p {
+  color: #9ca3af;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+/* Toggle Switch - Similar to main sidebar style */
+.settings-toggle {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+}
+
+.settings-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.settings-toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #4b5563;
+  transition: 0.3s;
+  border-radius: 24px;
+}
+
+.settings-toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 50%;
+}
+
+.settings-toggle input:checked + .settings-toggle-slider {
+  background-color: #06b6d4;
+}
+
+.settings-toggle input:checked + .settings-toggle-slider:before {
+  transform: translateX(20px);
+}
+
+/* Button Styles - Consistent with main sidebar */
+.settings-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #06b6d4;
+  color: #ffffff;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.settings-button:hover {
+  background-color: #0891b2;
+}
+
+.settings-button-danger {
+  background-color: #dc2626;
+}
+
+.settings-button-danger:hover {
+  background-color: #b91c1c;
+}
+
+/* Save Button */
+.settings-save-container {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #374151;
+}
+
+.settings-save-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.5rem;
+  background: linear-gradient(to right, #06b6d4, #9333ea);
+  color: #ffffff;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.settings-save-button:hover {
+  background: linear-gradient(to right, #0891b2, #7c3aed);
+  transform: translateY(-1px);
+}
+
+/* Security Styles */
+.settings-security-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.settings-security-item {
+  padding: 1rem;
+  background-color: rgba(55, 65, 81, 0.5);
+  border-radius: 0.5rem;
+}
+
+.settings-security-item h4 {
+  color: #ffffff;
+  font-weight: 500;
+  margin: 0 0 0.5rem 0;
+}
+
+.settings-security-item p {
+  color: #9ca3af;
+  font-size: 0.875rem;
+  margin: 0 0 0.75rem 0;
+}
+
+.settings-security-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  background-color: #374151;
+  border: 1px solid #4b5563;
+  border-radius: 0.5rem;
+  color: #ffffff;
+  margin-bottom: 0.75rem;
+}
+
+.settings-security-input:focus {
+  outline: none;
+  border-color: #06b6d4;
+  box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.3);
+}
+
+/* Data Section */
+.settings-data-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.settings-danger-zone {
+  padding: 1rem;
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 0.5rem;
+}
+
+.settings-danger-zone h4 {
+  color: #f87171;
+  font-weight: 500;
+  margin: 0 0 0.5rem 0;
+}
+
+.settings-danger-zone p {
+  color: #9ca3af;
+  font-size: 0.875rem;
+  margin: 0 0 0.75rem 0;
+}
+
+.settings-danger-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  .settings-danger-buttons {
+    flex-direction: row;
+  }
+}
+
+/* Session List */
+.settings-session-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.settings-session-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.settings-session-info p {
+  color: #ffffff;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.settings-session-time {
+  color: #9ca3af;
+  font-size: 0.75rem;
+}
+
+.settings-session-status {
+  color: #4ade80;
+  font-size: 0.75rem;
+}
+
+.settings-session-close {
+  color: #f87171;
+  font-size: 0.75rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.settings-session-close:hover {
+  color: #fca5a5;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1023px) {
+  .settings-sidebar-container {
+    position: static;
+    border-right: none;
+  }
+}

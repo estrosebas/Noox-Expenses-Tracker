@@ -1,0 +1,505 @@
+.home-page {
+  min-height: 100vh;
+  background: linear-gradient(to bottom right, #111827, #581c87, #111827);
+  position: relative;
+}
+
+.home-page__nav {
+  position: relative;
+  z-index: 10;
+  padding: 1rem 1.5rem;
+}
+
+.home-page__nav-container {
+  max-width: 80rem;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.home-page__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.home-page__brand-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  background: linear-gradient(to right, #22d3ee, #a855f7);
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-page__brand-icon-svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #ffffff;
+}
+
+.home-page__brand-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.home-page__nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.home-page__nav-link {
+  color: #d1d5db;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.home-page__nav-link:hover {
+  color: #ffffff;
+}
+
+.home-page__nav-btn {
+  background: linear-gradient(to right, #06b6d4, #9333ea);
+  color: #ffffff;
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  transition: all 0.2s;
+  transform: scale(1);
+  font-weight: 500;
+}
+
+.home-page__nav-btn:hover {
+  background: linear-gradient(to right, #0891b2, #7c3aed);
+  transform: scale(1.05);
+}
+
+.home-page__hero {
+  position: relative;
+  padding: 3rem 1rem;
+  text-align: center;
+}
+
+.home-page__hero-container {
+  max-width: 80rem;
+  margin: 0 auto;
+}
+
+.home-page__hero-title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 2rem;
+  line-height: 1.25;
+}
+
+.home-page__hero-highlight {
+  background: linear-gradient(to right, #22d3ee, #a855f7);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.home-page__hero-subtitle {
+  font-size: 1.125rem;
+  color: #d1d5db;
+  margin-bottom: 3rem;
+  max-width: 48rem;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.625;
+  padding: 0 1rem;
+}
+
+.home-page__hero-cta {
+  background: linear-gradient(to right, #06b6d4, #9333ea);
+  color: #ffffff;
+  padding: 1rem 2rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 1.125rem;
+  transition: all 0.2s;
+  transform: scale(1);
+  margin-right: 1rem;
+}
+
+.home-page__hero-cta:hover {
+  background: linear-gradient(to right, #0891b2, #7c3aed);
+  transform: scale(1.05);
+}
+
+.home-page__hero-cta-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-left: 0.5rem;
+}
+
+.home-page__hero-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.home-page__hero-secondary-btn {
+  border: 1px solid #4b5563;
+  color: #d1d5db;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+  display: inline-block;
+  text-align: center;
+}
+
+.home-page__hero-secondary-btn:hover {
+  background-color: #1f2937;
+  color: #ffffff;
+}
+
+.home-page__features {
+  padding: 5rem 1rem;
+  background-color: rgba(17, 24, 39, 0.5);
+}
+
+.home-page__features-container {
+  max-width: 80rem;
+  margin: 0 auto;
+}
+
+.home-page__features-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.home-page__features-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.home-page__features-subtitle {
+  font-size: 1.125rem;
+  color: #d1d5db;
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+  line-height: 1.6;
+}
+
+.home-page__features-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+.home-page__feature-card {
+  background-color: #1f2937;
+  padding: 2rem;
+  border-radius: 0.75rem;
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.home-page__feature-card:hover {
+  transform: translateY(-4px);
+}
+
+.home-page__feature-icon {
+  width: 3rem;
+  height: 3rem;
+  background: linear-gradient(to right, #22d3ee, #a855f7);
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+}
+
+.home-page__feature-icon-svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #ffffff;
+}
+
+.home-page__feature-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 0.75rem;
+}
+
+.home-page__feature-description {
+  color: #d1d5db;
+  line-height: 1.5;
+}
+
+.home-page__benefits {
+  padding: 5rem 1rem;
+}
+
+.home-page__benefits-container {
+  max-width: 80rem;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.home-page__benefits-content {
+  text-align: center;
+}
+
+.home-page__benefits-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 2rem;
+}
+
+.home-page__benefits-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.home-page__benefit-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #d1d5db;
+  font-size: 1.125rem;
+}
+
+.home-page__benefit-icon {
+  color: #10b981;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.home-page__benefits-card {
+  position: relative;
+}
+
+.home-page__security-card {
+  background: linear-gradient(to right, rgba(34, 211, 238, 0.2), rgba(168, 85, 247, 0.2));
+  border-radius: 1rem;
+  padding: 2rem;
+  backdrop-filter: blur(4px);
+  border: 1px solid #374151;
+}
+
+.home-page__security-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.home-page__security-icon {
+  width: 2rem;
+  height: 2rem;
+  color: #10b981;
+}
+
+.home-page__security-label {
+  font-size: 0.875rem;
+  color: #9ca3af;
+}
+
+.home-page__security-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 1rem;
+}
+
+.home-page__security-description {
+  color: #d1d5db;
+  line-height: 1.6;
+}
+
+/* Responsive Design */
+@media (min-width: 640px) {
+  .home-page__nav {
+    padding: 1rem 1.5rem;
+  }
+  
+  .home-page__hero {
+    padding: 5rem 1.5rem;
+  }
+  
+  .home-page__hero-title {
+    font-size: 3rem;
+  }
+  
+  .home-page__hero-subtitle {
+    font-size: 1.25rem;
+  }
+  
+  .home-page__nav-btn {
+    padding: 0.5rem 1.5rem;
+    font-size: 1rem;
+  }
+  
+  .home-page__features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .home-page__benefits-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .home-page__hero-buttons {
+    flex-direction: row;
+    justify-content: center;
+  }
+  
+  .home-page__hero-secondary-btn {
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+  }
+  
+  .home-page__features-subtitle {
+    font-size: 1.25rem;
+  }
+  
+  .home-page__cta {
+    padding: 5rem 1.5rem;
+  }
+}
+
+/* CTA Section Styles */
+.home-page__cta {
+  padding: 1.5rem 5rem;
+  background: linear-gradient(to right, rgba(8, 145, 178, 0.2), rgba(147, 51, 234, 0.2));
+}
+
+.home-page__cta-container {
+  max-width: 64rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.home-page__cta-content {
+  padding: 0 1.5rem;
+}
+
+.home-page__cta-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 2rem;
+}
+
+.home-page__cta-subtitle {
+  font-size: 1.25rem;
+  color: #d1d5db;
+  margin-bottom: 3rem;
+}
+
+.home-page__cta-button {
+  background: linear-gradient(to right, #06b6d4, #9333ea);
+  color: #ffffff;
+  padding: 1rem 3rem;
+  border-radius: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+  transform: scale(1);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.home-page__cta-button:hover {
+  background: linear-gradient(to right, #0891b2, #7c3aed);
+  transform: scale(1.05);
+}
+
+.home-page__cta-button-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-left: 0.5rem;
+}
+
+/* Footer Styles */
+.home-page__footer {
+  padding: 1.5rem 3rem;
+  background-color: #111827;
+  border-top: 1px solid #374151;
+}
+
+.home-page__footer-container {
+  max-width: 80rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.home-page__footer-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.home-page__footer-brand-icon {
+  width: 2rem;
+  height: 2rem;
+  background: linear-gradient(to right, #22d3ee, #a855f7);
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-page__footer-brand-icon-svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #ffffff;
+}
+
+.home-page__footer-brand-text {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.home-page__footer-copyright {
+  color: #9ca3af;
+  font-size: 0.875rem;
+}
+
+@media (min-width: 1024px) {
+  .home-page__hero-title {
+    font-size: 4.5rem;
+  }
+  
+  .home-page__features-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .home-page__benefits-content {
+    text-align: left;
+  }
+}

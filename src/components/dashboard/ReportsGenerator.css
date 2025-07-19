@@ -1,0 +1,277 @@
+.report-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.report-header {
+  background: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.report-title-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: linear-gradient(to right, #06b6d4, #8b5cf6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.report-icon {
+  color: white;
+  width: 20px;
+  height: 20px;
+}
+
+.report-title {
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.report-subtitle {
+  color: #9ca3af;
+}
+
+.report-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 1024px) {
+  .report-grid {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+.report-panel,
+.report-side,
+.report-section,
+.preview-box,
+.actions-box,
+.recent-reports {
+  background: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.report-section-title,
+.preview-title {
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.section-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}
+
+.report-options {
+  display: grid;
+  gap: 16px;
+}
+
+@media (min-width: 640px) {
+  .report-options {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .report-options {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.report-option {
+  background: rgba(55, 65, 81, 0.5);
+  border: 2px solid #4b5563;
+  border-radius: 8px;
+  padding: 16px;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+.report-option:hover {
+  border-color: #6b7280;
+}
+
+.report-option.selected {
+  background: rgba(6, 182, 212, 0.1);
+  border-color: #06b6d4;
+}
+
+.option-icon {
+  width: 24px;
+  height: 24px;
+  margin-bottom: 8px;
+  color: #9ca3af;
+}
+
+.option-icon.active {
+  color: #06b6d4;
+}
+
+.option-title {
+  color: white;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.option-description {
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+.report-periods {
+  display: grid;
+  gap: 12px;
+}
+
+@media (min-width: 640px) {
+  .report-periods {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .report-periods {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.period-button {
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  background: #374151;
+  color: #d1d5db;
+  transition: all 0.2s ease;
+}
+
+.period-button:hover {
+  background: #4b5563;
+}
+
+.period-button.active {
+  background: linear-gradient(to right, #06b6d4, #8b5cf6);
+  color: white;
+}
+
+.category-list {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+}
+
+.category-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #d1d5db;
+  font-size: 14px;
+}
+
+.preview-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 14px;
+}
+
+.preview-details span:first-child {
+  color: #9ca3af;
+}
+
+.preview-details span:last-child {
+  color: white;
+}
+
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.action-primary,
+.action-secondary {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.action-primary {
+  background: linear-gradient(to right, #06b6d4, #8b5cf6);
+  color: white;
+}
+
+.action-primary:hover {
+  background: linear-gradient(to right, #0891b2, #7c3aed);
+}
+
+.action-secondary {
+  background: #374151;
+  color: #d1d5db;
+}
+
+.action-secondary:hover {
+  background: #4b5563;
+}
+
+.action-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+}
+
+.recent-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.recent-item {
+  background: rgba(55, 65, 81, 0.5);
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.recent-item:hover {
+  background: #374151;
+}
+
+.recent-item p {
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.recent-item small {
+  color: #9ca3af;
+  font-size: 12px;
+}
