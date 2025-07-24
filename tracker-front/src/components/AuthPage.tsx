@@ -29,7 +29,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ onBack, initialEmail = '', initialM
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const { login, register, loginWithGoogle, loginWithFace, isLoading, error } = useAuth();
+  const { login, register, loginWithGoogle, loginWithFaceNooxid, isLoading, error } = useAuth();
 
   // Limpiar cámara al desmontar el componente
   useEffect(() => {
@@ -228,16 +228,13 @@ const AuthPage: React.FC<AuthPageProps> = ({ onBack, initialEmail = '', initialM
       // Detener la cámara
       stopCamera();
 
-      // Proceder con el login facial
+      // Proceder con el login facial usando el flujo de endpoints nooxid
       if (formData.email) {
-        const success = await loginWithFace(formData.email, base64String);
-        console.log('Face login result:', success);
-        
+        const success = await loginWithFaceNooxid(formData.email);
+        console.log('Face login (nooxid) result:', success);
         if (success) {
-          // Cerrar modal en caso de éxito
           setShowFaceCapture(false);
           setCapturedImage(null);
-          
           if (onSuccessfulLogin) {
             onSuccessfulLogin();
           }

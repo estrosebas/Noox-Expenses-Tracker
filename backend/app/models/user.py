@@ -6,10 +6,10 @@ class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
-    nombre = Column(String(50), nullable=False)
-    apellido = Column(String(50), nullable=False)
-    correo = Column(String(100), unique=True, nullable=False, index=True)
-    password = Column(Text, nullable=False)
+    nombre = Column(String(50), nullable=True)
+    apellido = Column(String(50), nullable=True)
+    correo = Column(String(100), unique=True, nullable=True, index=True)
+    password = Column(Text, nullable=True)
     nooxid_token_encrypted = Column(Text)
     google_refresh_token = Column(Text)
     profile_img_url = Column(Text)

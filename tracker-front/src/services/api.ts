@@ -1,10 +1,13 @@
 // Configuración base de la API
 export const API_CONFIG = {
-  BASE_URL: import.meta.env.VITE_API_URL || 'http://localhost:5000',
+  // el noox expenses tracker es 8000 y el noox id es 5000
+  BASE_URL: import.meta.env.VITE_API_URL || 'http://localhost:8000',
+  BASE_URLFACE: import.meta.env.VITE_API_URLFACE || 'http://localhost:5000',
+  
   ENDPOINTS: {
     // Auth
-    AUTH_REGISTER: '/api/auth/register',
-    AUTH_LOGIN: '/api/auth/login',
+    AUTH_REGISTER: '/auth/register',
+    AUTH_LOGIN: '/auth/login',
     AUTH_FACE_LOGIN: '/api/auth/face-login',
     AUTH_VERIFY_TOKEN: '/api/auth/verify-token',
     AUTH_GOOGLE: '/api/auth/google-auth',

@@ -1,4 +1,5 @@
 
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.db.session import SessionLocal
@@ -7,6 +8,10 @@ from app.schemas.user import UserCreate, UserLogin, UserOut
 from app.core.security import get_password_hash, verify_password, create_access_token
 from typing import Any
 from pydantic import BaseModel, EmailStr
+
+# Schema para loginbyface
+class TokenNooxidRequest(BaseModel):
+    tokennooxid: str
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -21,8 +26,12 @@ def get_db():
 class EmailCheckRequest(BaseModel):
     email: EmailStr
 
-class TokenNooxidRequest(BaseModel):
+
+class RegisterByFaceRequest(BaseModel):
     tokennooxid: str
+    nombre: str
+    apellido: str
+    correo: EmailStr
 
 @router.post("/verifyexist", summary="Verifica si un email existe", response_model=dict)
 def verify_exist(body: EmailCheckRequest, db: Session = Depends(get_db)):
@@ -30,11 +39,11 @@ def verify_exist(body: EmailCheckRequest, db: Session = Depends(get_db)):
     return {"exists": bool(user)}
 
 @router.post("/registerbyface", summary="Registra usuario por token facial", response_model=dict)
-def register_by_face(body: TokenNooxidRequest, db: Session = Depends(get_db)):
+def register_by_face(body: RegisterByFaceRequest, db: Session = Depends(get_db)):
     user = User(
-        nombre=None,
-        apellido=None,
-        correo=None,
+        nombre=body.nombre,
+        apellido=body.apellido,
+        correo=body.correo,
         password=None,
         nooxid_token_encrypted=body.tokennooxid,
         google_refresh_token=None,

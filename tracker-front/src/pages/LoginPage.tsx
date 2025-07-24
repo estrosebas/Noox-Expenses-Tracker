@@ -10,17 +10,21 @@ export const LoginPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [showFaceLogin, setShowFaceLogin] = useState(false);
-  const { login, loginWithFace } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
     try {
-      await login(email, password);
-      navigate('/dashboard');
+      const result = await login(email, password);
+      if (result === 'redirectToRegister') {
+        navigate('/register', { state: { email } });
+        return;
+      }
+      if (result) {
+        navigate('/dashboard');
+      }
     } catch (error) {
       console.error('Error en login:', error);
     } finally {
@@ -37,9 +41,6 @@ export const LoginPage: React.FC = () => {
     navigate(`/face-login?email=${encodeURIComponent(email)}`);
   };
 
-  const handleFaceLoginClose = () => {
-    setShowFaceLogin(false);
-  };
 
   return (
     <div className="login-page">

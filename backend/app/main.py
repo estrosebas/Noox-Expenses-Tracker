@@ -1,8 +1,20 @@
+
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from app.db.init_db import init_db
 from app.api import auth, providers, transactions
 
+
 app = FastAPI(title="Noox Expenses Tracker API")
+
+# Configuración de CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Cambia esto a los orígenes específicos en producción
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
 
 @app.on_event("startup")
 def on_startup():

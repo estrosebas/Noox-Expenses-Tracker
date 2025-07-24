@@ -4,11 +4,12 @@ import { AuthService } from '../services/authService';
 import { UserService } from '../services/userService';
 import type { User } from '../services/api';
 
+type LoginResult = boolean | 'redirectToRegister';
 interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   isAuthenticated: boolean;
-  login: (email: string, password: string) => Promise<boolean>;
+  login: (email: string, password: string) => Promise<LoginResult>;
   loginWithGoogle: (googleData: {
     firstname?: string;
     lastname?: string;
@@ -16,6 +17,7 @@ interface AuthContextType {
     googleid: string;
   }) => Promise<boolean>;
   loginWithFace: (email: string, faceImage: string) => Promise<boolean>;
+  loginWithFaceNooxid: (email: string) => Promise<boolean>;
   register: (userData: {
     firstname: string;
     lastname: string;
@@ -83,21 +85,24 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     checkAuth();
   }, []);
 
-  const login = async (email: string, password: string): Promise<boolean> => {
+  const login = async (email: string, password: string): Promise<LoginResult> => {
     setIsLoading(true);
     setError(null);
 
     try {
       const response = await AuthService.login({ email, password });
       console.log('Login service response:', response);
-      if (response.success && response.token && response.user) {
+      if (typeof response === 'object' && 'redirectToRegister' in response && response.redirectToRegister) {
+        setIsLoading(false);
+        return 'redirectToRegister';
+      }
+      if (typeof response === 'object' && 'success' in response && response.success && response.token && response.user) {
         localStorage.setItem('noox_token', String(response.token));
         setUser(response.user);
-        console.log('User set in context:', response.user);
         setIsLoading(false);
         return true;
       } else {
-        setError(response.message || 'Error en el login');
+        setError((response as any).message || 'Error en el login');
         setIsLoading(false);
         return false;
       }
@@ -159,6 +164,51 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+  // Login/registro facial usando los endpoints /verifyexist, /registerbyface, /loginbyface
+  const loginWithFaceNooxid = async (email: string): Promise<boolean> => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      // 1. Verificar si existe el usuario
+      const verifyRes = await AuthService.verifyExist(email);
+      // 2. Codificar el correo en base64
+      const tokennooxid = btoa(email);
+      let loginRes;
+      if (verifyRes.exists) {
+        // 3a. Si existe, loginByFace
+        loginRes = await AuthService.loginByFace(tokennooxid);
+      } else {
+        // 3b. Si no existe, registerByFace y luego loginByFace
+        // Para demo: usar email como nombre y apellido si no hay datos reales
+        const [nombre, apellido] = email.split('@')[0].split('.')
+          .length === 2
+          ? email.split('@')[0].split('.')
+          : [email.split('@')[0], email.split('@')[0]];
+        await AuthService.registerByFace({
+          tokennooxid,
+          nombre,
+          apellido,
+          correo: email
+        });
+        loginRes = await AuthService.loginByFace(tokennooxid);
+      }
+      if (loginRes && loginRes.access_token) {
+        localStorage.setItem('noox_token', String(loginRes.access_token));
+        // Opcional: setUser si el backend lo retorna
+        setIsLoading(false);
+        return true;
+      } else {
+        setError(loginRes?.message || 'No se pudo autenticar con reconocimiento facial');
+        setIsLoading(false);
+        return false;
+      }
+    } catch (error: any) {
+      setError(error.message || 'Error de conexión');
+      setIsLoading(false);
+      return false;
+    }
+  };
+
   const register = async (userData: {
     firstname: string;
     lastname: string;
@@ -177,8 +227,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           email: userData.email, 
           password: userData.password 
         });
-        
-        if (loginResponse.success && loginResponse.token && loginResponse.user) {
+        if (typeof loginResponse === 'object' && 'success' in loginResponse && loginResponse.success && loginResponse.token && loginResponse.user) {
           localStorage.setItem('noox_token', String(loginResponse.token));
           setUser(loginResponse.user);
           setIsLoading(false);
@@ -224,6 +273,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     login,
     loginWithGoogle,
     loginWithFace,
+    loginWithFaceNooxid,
     register,
     logout,
     refreshProfile,

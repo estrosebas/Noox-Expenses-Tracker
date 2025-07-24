@@ -1,17 +1,23 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Mail, Lock, User, Eye, EyeOff, Zap, ArrowLeft } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import './RegisterPage.css';
 
-export const RegisterPage: React.FC = () => {
+const RegisterPage: React.FC = () => {
+  const location = useLocation();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
     confirmPassword: ''
   });
+  useEffect(() => {
+    if (location.state && location.state.email) {
+      setFormData((prev) => ({ ...prev, email: location.state.email }));
+    }
+  }, [location.state]);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -19,25 +25,27 @@ export const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
     if (formData.password !== formData.confirmPassword) {
       alert('Las contraseñas no coinciden');
       return;
     }
-
     setIsLoading(true);
-    
     try {
-      await register(formData.name, formData.email, formData.password);
-      navigate('/dashboard');
+      // Dividir nombre completo en firstname y lastname
+      const [firstname, ...rest] = formData.name.trim().split(' ');
+      const lastname = rest.join(' ') || firstname;
+      const success = await register({
+        firstname,
+        lastname,
+        email: formData.email,
+        password: formData.password
+      });
+      if (success) navigate('/dashboard');
     } catch (error) {
       console.error('Error en registro:', error);
     } finally {
@@ -222,3 +230,4 @@ export const RegisterPage: React.FC = () => {
     </div>
   );
 };
+export { RegisterPage };
