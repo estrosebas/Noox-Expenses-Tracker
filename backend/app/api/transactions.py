@@ -1,3 +1,4 @@
+from fastapi import Query
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.db.session import SessionLocal
@@ -6,7 +7,27 @@ from app.schemas.transaction import TransactionCreate, TransactionOut
 from app.core.dependencies import get_current_user, get_db
 from typing import List
 
+
 router = APIRouter(prefix="/transactions", tags=["transactions"])
+@router.get("/search", response_model=List[TransactionOut])
+def search_transactions(
+    q: str = Query(..., description="Texto a buscar en el campo subject"),
+    db: Session = Depends(get_db),
+    user=Depends(get_current_user)
+):
+    results = db.query(Transaction).filter(
+        Transaction.user_id == user.id,
+        Transaction.subject.ilike(f"%{q}%")
+    ).all()
+    return results
+
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
+from app.db.session import SessionLocal
+from app.models.transaction import Transaction, TransactionTypeEnum
+from app.schemas.transaction import TransactionCreate, TransactionOut
+from app.core.dependencies import get_current_user, get_db
+from typing import List
 
 @router.post("/", response_model=TransactionOut)
 def create_transaction(tx_in: TransactionCreate, db: Session = Depends(get_db), user=Depends(get_current_user)):

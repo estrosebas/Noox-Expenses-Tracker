@@ -1,0 +1,136 @@
+# Endpoints sugeridos para dashboard (mock data detectada)
+
+
+1. StatsCards
+# Devuelve un resumen financiero mensual del usuario (gastos, ingresos, ahorro, presupuesto restante)
+Endpoint: GET /api/summary/monthly
+  - Middleware: JWT Auth
+  - Response example:
+    {
+      "expenses": 2450.00,
+      "income": 4200.00,
+      "savings": 1750.00,
+      "budget_left": 850.00
+    }
+
+
+2. ExpenseChart
+# Devuelve los datos para graficar la evolución de gastos e ingresos por mes
+Endpoint: GET /api/expenses/chart?period=monthly
+  - Middleware: JWT Auth
+  - Response example:
+    {
+      "labels": ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul"],
+      "expenses": [2100, 1950, 2300, 2450, 2200, 2150, 2450],
+      "income": [4000, 4200, 3900, 4100, 4300, 4000, 4200]
+    }
+
+
+3. RecentTransactions
+# Lista las transacciones más recientes del usuario
+Endpoint: GET /api/transactions/recent?limit=6
+  - Middleware: JWT Auth
+  - Response example:
+    [
+      { "id": 1, "type": "expense", "title": "Supermercado Plaza Vea", "category": "Alimentación", "amount": 127.50, "date": "2025-01-15", "time": "10:30 AM", "method": "Yape" },
+      { "id": 2, "type": "income", "title": "Pago Freelance", "category": "Ingresos", "amount": 850.00, "date": "2025-01-14", "time": "3:45 PM", "method": "Transferencia" }
+    ]
+
+
+4. CategoryBreakdown
+# Devuelve el desglose de gastos por categoría para el periodo seleccionado
+Endpoint: GET /api/expenses/categories/breakdown?period=monthly
+  - Middleware: JWT Auth
+  - Response example:
+    [
+      { "name": "Alimentación", "amount": 850, "color": "#06B6D4", "percentage": 34.7 },
+      { "name": "Transporte", "amount": 420, "color": "#8B5CF6", "percentage": 17.1 }
+    ]
+
+
+5. Analytics
+# Proporciona insights y predicciones inteligentes sobre los hábitos financieros del usuario
+Endpoint: GET /api/analytics/insights
+  - Middleware: JWT Auth
+  - Response example:
+    [
+      { "title": "Tendencia de Gastos", "value": "+15%", "description": "Incremento respecto al mes anterior", "trend": "up" },
+      { "title": "Categoría Principal", "value": "Alimentación", "description": "34.7% del total de gastos", "trend": "neutral" }
+    ]
+- Endpoint: GET /api/analytics/predictions
+  - Middleware: JWT Auth
+  - Response example:
+    [
+      { "month": "Febrero 2025", "predicted": 2650, "current": 2450, "confidence": 85 }
+    ]
+
+
+6. Categories
+# Permite gestionar las categorías de gasto del usuario (listar, crear, editar, eliminar)
+Endpoint: GET /api/categories
+  - Middleware: JWT Auth
+  - Response example:
+    [
+      { "id": 1, "name": "Alimentación", "budget": 1000, "spent": 850, "color": "#06B6D4", "icon": "Utensils" }
+    ]
+- Endpoint: POST /api/categories
+  - Middleware: JWT Auth
+  - Body example:
+    { "name": "Nueva", "budget": 500, "color": "#F59E0B", "icon": "Zap" }
+  - Response example:
+    { "success": true, "category": { ... } }
+- Endpoint: PUT /api/categories/:id
+  - Middleware: JWT Auth
+  - Body example:
+    { "name": "Editada", "budget": 600 }
+  - Response example:
+    { "success": true, "category": { ... } }
+- Endpoint: DELETE /api/categories/:id
+  - Middleware: JWT Auth
+  - Response example:
+    { "success": true }
+
+
+7. ReportsGenerator
+# Genera reportes financieros personalizados según filtros y preferencias del usuario
+Endpoint: POST /api/reports/generate
+  - Middleware: JWT Auth
+  - Body example:
+    { "type": "summary", "period": "monthly", "categories": ["Alimentación", "Transporte"] }
+  - Response example:
+    { "success": true, "reportUrl": "/reports/123.pdf" }
+
+
+
+# Header
+# Solo se puede implementar el perfil y búsqueda de transacciones
+# Devuelve los datos del usuario autenticado
+**COMPLETADO PROFILE**
+Endpoint: GET /api/users/profile
+  - Middleware: JWT Auth
+  - Response example:
+    { "id": 1, "nombre": "Sebas", "correo": "sebas@noox.com" }
+
+
+# Permite buscar transacciones por texto en el campo subject
+Endpoint: GET /api/transactions/search?q=supermercado
+  - Middleware: JWT Auth
+  - Response example:
+    [
+      { "id": 1, "subject": "Supermercado Plaza Vea", "amount": 127.50 }
+    ]
+# Sincronización
+# Permite al usuario forzar la sincronización de datos con servicios externos o fuentes conectadas
+Endpoint: POST /api/sync
+  - Middleware: JWT Auth
+  - Body example: {}
+  - Response example:
+    { "success": true, "message": "Sincronización iniciada" }
+
+# Sincronización
+# Permite al usuario forzar la sincronización de datos con servicios externos o fuentes conectadas
+Endpoint: POST /api/sync
+  - Middleware: JWT Auth
+  - Body example: {}
+  - Response example:
+    { "success": true, "message": "Sincronización iniciada" }
