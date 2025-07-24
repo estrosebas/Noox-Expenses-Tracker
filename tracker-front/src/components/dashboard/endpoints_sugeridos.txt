@@ -30,6 +30,7 @@ Endpoint: GET /api/expenses/chart?period=monthly
 
 3. RecentTransactions
 # Lista las transacciones más recientes del usuario
+**COMPLETADO RecentTransactions**
 Endpoint: GET /api/transactions/recent?limit=6
   - Middleware: JWT Auth
   - Response example:
@@ -41,6 +42,7 @@ Endpoint: GET /api/transactions/recent?limit=6
 
 4. CategoryBreakdown
 # Devuelve el desglose de gastos por categoría para el periodo seleccionado
+**COMPLETADO breakdown**
 Endpoint: GET /api/expenses/categories/breakdown?period=monthly
   - Middleware: JWT Auth
   - Response example:
@@ -52,6 +54,7 @@ Endpoint: GET /api/expenses/categories/breakdown?period=monthly
 
 5. Analytics
 # Proporciona insights y predicciones inteligentes sobre los hábitos financieros del usuario
+**COMPLETADO Analytics**
 Endpoint: GET /api/analytics/insights
   - Middleware: JWT Auth
   - Response example:
