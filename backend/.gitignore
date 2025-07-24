@@ -1,0 +1,18 @@
+# Python cache
+__pycache__/
+**/__pycache__/
+app/api/__pycache__/
+
+# Byte-compiled / optimized / DLL files
+*.py[cod]
+
+# Virtual environments
+venv/
+.env
+.env.*
+
+# SQLite DB (si usas para pruebas)
+*.db
+
+# VSCode
+.vscode/
