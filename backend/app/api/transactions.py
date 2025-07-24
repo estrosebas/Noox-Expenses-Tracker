@@ -1,3 +1,58 @@
+from fastapi import Query, APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
+from app.db.session import SessionLocal
+from app.models.transaction import Transaction, TransactionTypeEnum
+from app.schemas.transaction import TransactionCreate, TransactionOut
+from app.core.dependencies import get_current_user, get_db
+from typing import List
+
+router = APIRouter(prefix="/transactions", tags=["transactions"])
+
+# Endpoint para transacciones recientes (debe ir antes de /{tx_id})
+@router.get("/recent")
+def recent_transactions(
+    limit: int = Query(6, ge=1, le=100, description="Cantidad de transacciones a devolver"),
+    db: Session = Depends(get_db),
+    user=Depends(get_current_user)
+):
+    txs = db.query(Transaction).filter(Transaction.user_id == user.id).order_by(Transaction.date.desc()).limit(limit).all()
+    # Formatear respuesta según ejemplo
+    result = []
+    for tx in txs:
+        result.append({
+            "id": tx.id,
+            "type": "income" if tx.type.name.lower() == "entrada" else "expense",
+            "title": tx.subject,
+            "category": getattr(tx, "category", None),
+            "amount": float(tx.amount),
+            "date": tx.date.strftime("%Y-%m-%d"),
+            "time": tx.date.strftime("%I:%M %p"),
+            "method": getattr(tx, "method", None)
+        })
+    return result
+
+# Endpoint para transacciones recientes
+@router.get("/recent")
+def recent_transactions(
+    limit: int = Query(6, ge=1, le=100, description="Cantidad de transacciones a devolver"),
+    db: Session = Depends(get_db),
+    user=Depends(get_current_user)
+):
+    txs = db.query(Transaction).filter(Transaction.user_id == user.id).order_by(Transaction.date.desc()).limit(limit).all()
+    # Formatear respuesta según ejemplo
+    result = []
+    for tx in txs:
+        result.append({
+            "id": tx.id,
+            "type": "income" if tx.type.name.lower() == "entrada" else "expense",
+            "title": tx.subject,
+            "category": getattr(tx, "category", None),
+            "amount": float(tx.amount),
+            "date": tx.date.strftime("%Y-%m-%d"),
+            "time": tx.date.strftime("%I:%M %p"),
+            "method": getattr(tx, "method", None)
+        })
+    return result
 from fastapi import Query
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
@@ -8,7 +63,6 @@ from app.core.dependencies import get_current_user, get_db
 from typing import List
 
 
-router = APIRouter(prefix="/transactions", tags=["transactions"])
 @router.get("/search", response_model=List[TransactionOut])
 def search_transactions(
     q: str = Query(..., description="Texto a buscar en el campo subject"),

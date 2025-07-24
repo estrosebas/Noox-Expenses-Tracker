@@ -2,7 +2,7 @@
 
 
 1. StatsCards
-# Devuelve un resumen financiero mensual del usuario (gastos, ingresos, ahorro, presupuesto restante)
+**COMPLETADO SUMMARY MONTHLY**
 Endpoint: GET /api/summary/monthly
   - Middleware: JWT Auth
   - Response example:
@@ -12,10 +12,11 @@ Endpoint: GET /api/summary/monthly
       "savings": 1750.00,
       "budget_left": 850.00
     }
+  - Nota: Ya disponible en backend, calcula income y expenses sumando transacciones del usuario por tipo.
 
 
 2. ExpenseChart
-# Devuelve los datos para graficar la evolución de gastos e ingresos por mes
+**COMPLETADO EXPENSES**
 Endpoint: GET /api/expenses/chart?period=monthly
   - Middleware: JWT Auth
   - Response example:
@@ -24,6 +25,7 @@ Endpoint: GET /api/expenses/chart?period=monthly
       "expenses": [2100, 1950, 2300, 2450, 2200, 2150, 2450],
       "income": [4000, 4200, 3900, 4100, 4300, 4000, 4200]
     }
+  - Nota: Ya disponible en backend, agrupa y suma por mes solo los meses existentes en la base de datos.
 
 
 3. RecentTransactions
@@ -65,33 +67,8 @@ Endpoint: GET /api/analytics/insights
     ]
 
 
-6. Categories
-# Permite gestionar las categorías de gasto del usuario (listar, crear, editar, eliminar)
-Endpoint: GET /api/categories
-  - Middleware: JWT Auth
-  - Response example:
-    [
-      { "id": 1, "name": "Alimentación", "budget": 1000, "spent": 850, "color": "#06B6D4", "icon": "Utensils" }
-    ]
-- Endpoint: POST /api/categories
-  - Middleware: JWT Auth
-  - Body example:
-    { "name": "Nueva", "budget": 500, "color": "#F59E0B", "icon": "Zap" }
-  - Response example:
-    { "success": true, "category": { ... } }
-- Endpoint: PUT /api/categories/:id
-  - Middleware: JWT Auth
-  - Body example:
-    { "name": "Editada", "budget": 600 }
-  - Response example:
-    { "success": true, "category": { ... } }
-- Endpoint: DELETE /api/categories/:id
-  - Middleware: JWT Auth
-  - Response example:
-    { "success": true }
 
-
-7. ReportsGenerator
+6. ReportsGenerator
 # Genera reportes financieros personalizados según filtros y preferencias del usuario
 Endpoint: POST /api/reports/generate
   - Middleware: JWT Auth
@@ -104,14 +81,14 @@ Endpoint: POST /api/reports/generate
 
 # Header
 # Solo se puede implementar el perfil y búsqueda de transacciones
-# Devuelve los datos del usuario autenticado
 **COMPLETADO PROFILE**
+# Devuelve los datos del usuario autenticado
 Endpoint: GET /api/users/profile
   - Middleware: JWT Auth
   - Response example:
     { "id": 1, "nombre": "Sebas", "correo": "sebas@noox.com" }
 
-
+**COMPLETADO SEARCH**
 # Permite buscar transacciones por texto en el campo subject
 Endpoint: GET /api/transactions/search?q=supermercado
   - Middleware: JWT Auth
@@ -119,13 +96,7 @@ Endpoint: GET /api/transactions/search?q=supermercado
     [
       { "id": 1, "subject": "Supermercado Plaza Vea", "amount": 127.50 }
     ]
-# Sincronización
-# Permite al usuario forzar la sincronización de datos con servicios externos o fuentes conectadas
-Endpoint: POST /api/sync
-  - Middleware: JWT Auth
-  - Body example: {}
-  - Response example:
-    { "success": true, "message": "Sincronización iniciada" }
+
 
 # Sincronización
 # Permite al usuario forzar la sincronización de datos con servicios externos o fuentes conectadas

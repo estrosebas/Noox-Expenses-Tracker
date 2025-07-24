@@ -2,7 +2,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.db.init_db import init_db
-from app.api import auth, providers, transactions
+from app.api import auth, providers, transactions, summary, expenses
 
 
 app = FastAPI(title="Noox Expenses Tracker API")
@@ -23,6 +23,8 @@ def on_startup():
 app.include_router(auth.router)
 app.include_router(providers.router)
 app.include_router(transactions.router)
+app.include_router(summary.router)
+app.include_router(expenses.router)
 
 @app.get("/")
 def root():
