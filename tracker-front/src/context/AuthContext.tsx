@@ -96,9 +96,24 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setIsLoading(false);
         return 'redirectToRegister';
       }
-      if (typeof response === 'object' && 'success' in response && response.success && response.token && response.user) {
+      if (typeof response === 'object' && 'success' in response && response.success && response.token) {
         localStorage.setItem('noox_token', String(response.token));
-        setUser(response.user);
+        // Si el usuario viene en la respuesta, lo seteamos; si no, lo pedimos al backend
+        if (response.user) {
+          setUser(response.user);
+        } else {
+          // Pedir perfil al backend
+          try {
+            const profileResp = await UserService.getCurrentProfile();
+            if (profileResp.success && profileResp.user) {
+              setUser(profileResp.user);
+            } else {
+              setUser(null);
+            }
+          } catch (e) {
+            setUser(null);
+          }
+        }
         setIsLoading(false);
         return true;
       } else {

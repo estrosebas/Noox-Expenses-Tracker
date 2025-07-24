@@ -1,17 +1,39 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, ArrowDownLeft, MoreHorizontal } from 'lucide-react';
 import './RecentTransactions.css';
 
 export const RecentTransactions: React.FC = () => {
-  const transactions = [
-    { id: 1, type: 'expense', title: 'Supermercado Plaza Vea', category: 'Alimentación', amount: 127.50, date: '2025-01-15', time: '10:30 AM', method: 'Yape' },
-    { id: 2, type: 'income', title: 'Pago Freelance', category: 'Ingresos', amount: 850.00, date: '2025-01-14', time: '3:45 PM', method: 'Transferencia' },
-    { id: 3, type: 'expense', title: 'Uber', category: 'Transporte', amount: 15.80, date: '2025-01-14', time: '8:20 AM', method: 'Plin' },
-    { id: 4, type: 'expense', title: 'Netflix', category: 'Servicios', amount: 35.90, date: '2025-01-13', time: '12:00 PM', method: 'Tarjeta' },
-    { id: 5, type: 'expense', title: 'Restaurante Maido', category: 'Entretenimiento', amount: 180.00, date: '2025-01-13', time: '7:30 PM', method: 'Yape' },
-    { id: 6, type: 'income', title: 'Salario', category: 'Ingresos', amount: 3200.00, date: '2025-01-01', time: '9:00 AM', method: 'Transferencia' }
-  ];
+  const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+  const [transactions, setTransactions] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchRecent = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const token = localStorage.getItem('noox_token') || localStorage.getItem('token');
+        const res = await fetch(`${BASE_URL}/transactions/recent?limit=10`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        if (!res.ok) throw new Error('Error al obtener transacciones');
+        const json = await res.json();
+        setTransactions(json);
+      } catch (err: any) {
+        setError(err.message || 'Error desconocido');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchRecent();
+  }, []);
+
+  if (loading) return <div className="transactions-container"><div className="transactions-list">Cargando...</div></div>;
+  if (error) return <div className="transactions-container"><div className="transactions-list error">{error}</div></div>;
 
   return (
     <motion.div
@@ -46,10 +68,6 @@ export const RecentTransactions: React.FC = () => {
               <div>
                 <h4 className="transaction-title">{transaction.title}</h4>
                 <div className="transaction-meta">
-                  <span>{transaction.category}</span>
-                  <span className="dot sm-visible">•</span>
-                  <span>{transaction.method}</span>
-                  <span className="dot md-visible">•</span>
                   <span className="md-visible">{transaction.time}</span>
                 </div>
               </div>

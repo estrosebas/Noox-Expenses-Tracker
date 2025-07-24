@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import {
   LayoutDashboard,
   TrendingUp,
-  PieChart,
+  //PieChart,
   FileText,
   Settings,
   LogOut,
@@ -31,7 +31,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const menuItems = [
     { id: 'overview', label: 'Resumen', icon: LayoutDashboard },
     { id: 'analytics', label: 'Análisis', icon: TrendingUp },
-    { id: 'categories', label: 'Categorías', icon: PieChart },
+   // { id: 'categories', label: 'Categorías', icon: PieChart },
     { id: 'reports', label: 'Reportes', icon: FileText },
     { id: 'settings', label: 'Configuración', icon: Settings }
   ];

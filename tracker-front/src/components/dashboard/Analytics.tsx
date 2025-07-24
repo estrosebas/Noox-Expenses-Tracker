@@ -1,21 +1,45 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { TrendingUp, TrendingDown, BarChart3, Calendar, Target, AlertCircle } from 'lucide-react';
+import { TrendingUp, TrendingDown, BarChart3, Target, AlertCircle } from 'lucide-react';
 import './Analytics.css';
 
 export const Analytics: React.FC = () => {
-  const insights = [
-    { title: 'Tendencia de Gastos', value: '+15%', description: 'Incremento respecto al mes anterior', trend: 'up', color: 'insight--red' },
-    { title: 'Categoría Principal', value: 'Alimentación', description: '34.7% del total de gastos', trend: 'neutral', color: 'insight--cyan' },
-    { title: 'Días con Mayor Gasto', value: 'Viernes', description: 'Promedio S/ 180 por día', trend: 'up', color: 'insight--purple' },
-    { title: 'Meta de Ahorro', value: '68%', description: 'Progreso hacia tu objetivo mensual', trend: 'up', color: 'insight--green' }
-  ];
+  // Mockdata para predicciones y recomendaciones (puedes conectar a endpoint si lo tienes)
+  const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+  const [insights, setInsights] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const predictions = [
-    { month: 'Febrero 2025', predicted: 2650, current: 2450, confidence: 85 },
-    { month: 'Marzo 2025', predicted: 2580, current: 2450, confidence: 78 },
-    { month: 'Abril 2025', predicted: 2720, current: 2450, confidence: 72 }
-  ];
+  useEffect(() => {
+    const fetchInsights = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const token = localStorage.getItem('noox_token') || localStorage.getItem('token');
+        const res = await fetch(`${BASE_URL}/analytics/insights`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        if (!res.ok) throw new Error('Error al obtener insights');
+        const json = await res.json();
+        setInsights(json);
+      } catch (err: any) {
+        setError(err.message || 'Error desconocido');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchInsights();
+  }, []);
+
+  if (loading) return <div className="analytics"><div className="analytics__insights-grid">Cargando...</div></div>;
+  if (error) return <div className="analytics"><div className="analytics__insights-grid error">{error}</div></div>;
+
+  // Si el backend responde con un mensaje de error o no hay insights válidos
+  const noInsights =
+    (Array.isArray(insights) && insights.length === 0) ||
+    (Array.isArray(insights) && insights[0] && insights[0].message === 'fail');
 
   return (
     <motion.div 
@@ -35,23 +59,29 @@ export const Analytics: React.FC = () => {
       </div>
 
       <div className="analytics__insights-grid">
-        {insights.map((insight, i) => (
-          <motion.div
-            key={i}
-            className="insight-card"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1 }}
-          >
-            <div className="insight-card__header">
-              <span className="insight-card__title">{insight.title}</span>
-              {insight.trend === 'up' && <TrendingUp className="insight-card__icon trend-up" />}
-              {insight.trend === 'down' && <TrendingDown className="insight-card__icon trend-down" />}
-            </div>
-            <p className={`insight-card__value ${insight.color}`}>{insight.value}</p>
-            <p className="insight-card__desc">{insight.description}</p>
-          </motion.div>
-        ))}
+        {noInsights ? (
+          <div className="insight-card insight-card--alert">
+            {insights[0] && insights[0].data ? insights[0].data : 'No hay datos suficientes para mostrar insights.'}
+          </div>
+        ) : (
+          insights.map((insight: any, i: number) => (
+            <motion.div
+              key={i}
+              className="insight-card"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1 }}
+            >
+              <div className="insight-card__header">
+                <span className="insight-card__title">{insight.title}</span>
+                {insight.trend === 'up' && <TrendingUp className="insight-card__icon trend-up" />}
+                {insight.trend === 'down' && <TrendingDown className="insight-card__icon trend-down" />}
+              </div>
+              <p className={`insight-card__value ${insight.color || ''}`}>{insight.value}</p>
+              <p className="insight-card__desc">{insight.description}</p>
+            </motion.div>
+          ))
+        )}
       </div>
 
       <div className="analytics__section">
@@ -60,30 +90,7 @@ export const Analytics: React.FC = () => {
           <h3>Predicciones de Gasto</h3>
         </div>
         <div className="analytics__predictions">
-          {predictions.map((p, i) => (
-            <motion.div
-              key={i}
-              className="prediction-card"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: i * 0.1 }}
-            >
-              <div className="prediction-card__left">
-                <Calendar />
-                <div>
-                  <h4>{p.month}</h4>
-                  <p>Confianza: {p.confidence}%</p>
-                </div>
-              </div>
-              <div className="prediction-card__right">
-                <p>S/ {p.predicted.toLocaleString()}</p>
-                <p className={p.predicted > p.current ? 'trend-up' : 'trend-down'}>
-                  {p.predicted > p.current ? '+' : ''}
-                  {((p.predicted - p.current) / p.current * 100).toFixed(1)}%
-                </p>
-              </div>
-            </motion.div>
-          ))}
+          <div className="prediction-card prediction-card--info">En desarrollo</div>
         </div>
       </div>
 

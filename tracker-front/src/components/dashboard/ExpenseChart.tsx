@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Line } from 'react-chartjs-2';
 import {
@@ -26,12 +26,40 @@ ChartJS.register(
 );
 
 export const ExpenseChart: React.FC = () => {
-  const data = {
-    labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul'],
+  const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+  const [chartData, setChartData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchChart = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const token = localStorage.getItem('noox_token') || localStorage.getItem('token');
+        const res = await fetch(`${BASE_URL}/expenses/chart?period=monthly`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        if (!res.ok) throw new Error('Error al obtener datos');
+        const json = await res.json();
+        setChartData(json);
+      } catch (err: any) {
+        setError(err.message || 'Error desconocido');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchChart();
+  }, []);
+
+  const data = chartData ? {
+    labels: chartData.labels,
     datasets: [
       {
         label: 'Gastos',
-        data: [2100, 1950, 2300, 2450, 2200, 2150, 2450],
+        data: chartData.expenses,
         borderColor: 'rgb(6, 182, 212)',
         backgroundColor: 'rgba(6, 182, 212, 0.1)',
         tension: 0.4,
@@ -44,7 +72,7 @@ export const ExpenseChart: React.FC = () => {
       },
       {
         label: 'Ingresos',
-        data: [4000, 4200, 3900, 4100, 4300, 4000, 4200],
+        data: chartData.income,
         borderColor: 'rgb(16, 185, 129)',
         backgroundColor: 'rgba(16, 185, 129, 0.1)',
         tension: 0.4,
@@ -56,7 +84,7 @@ export const ExpenseChart: React.FC = () => {
         pointHoverRadius: 8,
       }
     ]
-  };
+  } : null;
 
   const options = {
     responsive: true,
@@ -113,6 +141,9 @@ export const ExpenseChart: React.FC = () => {
     }
   };
 
+  if (loading) return <div className="chart-container"><div className="chart-body">Cargando...</div></div>;
+  if (error) return <div className="chart-container"><div className="chart-body error">{error}</div></div>;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -129,7 +160,7 @@ export const ExpenseChart: React.FC = () => {
         </select>
       </div>
       <div className="chart-body">
-        <Line data={data} options={options} />
+        {data && <Line data={data} options={options} />}
       </div>
     </motion.div>
   );

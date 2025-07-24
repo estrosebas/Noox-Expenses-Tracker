@@ -1,18 +1,47 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Doughnut } from 'react-chartjs-2';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Chart as ChartJS, ArcElement, Tooltip as ChartTooltip, Legend as ChartLegend } from 'chart.js';
 import './categoryBreakdown.css';
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(ArcElement, ChartTooltip, ChartLegend);
 
 export const CategoryBreakdown: React.FC = () => {
+  const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+  const [categories, setCategories] = React.useState<any[]>([]);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    const fetchBreakdown = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const token = localStorage.getItem('noox_token') || localStorage.getItem('token');
+        const res = await fetch(`${BASE_URL}/expenses/categories/breakdown?period=monthly`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        if (!res.ok) throw new Error('Error al obtener desglose');
+        const json = await res.json();
+        setCategories(json);
+      } catch (err: any) {
+        setError(err.message || 'Error desconocido');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchBreakdown();
+  }, []);
+
   const data = {
-    labels: ['Alimentación', 'Transporte', 'Entretenimiento', 'Servicios', 'Compras', 'Otros'],
+    labels: categories.map((c: any) => c.name),
     datasets: [
       {
-        data: [850, 420, 380, 350, 280, 170],
-        backgroundColor: ['#06B6D4', '#8B5CF6', '#10B981', '#F59E0B', '#EF4444', '#6B7280'],
+        data: categories.map((c: any) => c.amount),
+        backgroundColor: categories.map((c: any) => c.color),
         borderColor: '#1F2937',
         borderWidth: 3,
         hoverBorderWidth: 4,
@@ -29,7 +58,7 @@ export const CategoryBreakdown: React.FC = () => {
         position: 'right' as const,
         labels: {
           color: '#D1D5DB',
-          font: { size: 12, weight: '500' },
+          font: { size: 12, weight: 500 },
           usePointStyle: true,
           pointStyle: 'circle',
           padding: 20
@@ -44,7 +73,8 @@ export const CategoryBreakdown: React.FC = () => {
         cornerRadius: 8,
         callbacks: {
           label: function (context: any) {
-            const percentage = ((context.parsed / context.dataset.data.reduce((a: number, b: number) => a + b, 0)) * 100).toFixed(1);
+            const total = context.dataset.data.reduce((a: number, b: number) => a + b, 0);
+            const percentage = total > 0 ? ((context.parsed / total) * 100).toFixed(1) : '0.0';
             return `${context.label}: S/ ${context.parsed.toLocaleString()} (${percentage}%)`;
           }
         }
@@ -53,14 +83,8 @@ export const CategoryBreakdown: React.FC = () => {
     cutout: '60%'
   };
 
-  const categories = [
-    { name: 'Alimentación', amount: 850, color: '#06B6D4', percentage: 34.7 },
-    { name: 'Transporte', amount: 420, color: '#8B5CF6', percentage: 17.1 },
-    { name: 'Entretenimiento', amount: 380, color: '#10B981', percentage: 15.5 },
-    { name: 'Servicios', amount: 350, color: '#F59E0B', percentage: 14.3 },
-    { name: 'Compras', amount: 280, color: '#EF4444', percentage: 11.4 },
-    { name: 'Otros', amount: 170, color: '#6B7280', percentage: 6.9 }
-  ];
+  if (loading) return <div className="breakdown-container"><div className="breakdown-chart">Cargando...</div></div>;
+  if (error) return <div className="breakdown-container"><div className="breakdown-chart error">{error}</div></div>;
 
   return (
     <motion.div
@@ -80,7 +104,7 @@ export const CategoryBreakdown: React.FC = () => {
         </div>
 
         <div className="category-list">
-          {categories.map((category, index) => (
+          {categories.map((category: any, index: number) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, x: 20 }}

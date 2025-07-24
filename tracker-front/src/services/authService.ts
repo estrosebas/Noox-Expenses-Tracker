@@ -60,19 +60,37 @@ export class AuthService {
   static async login(credentials: {
     email: string;
     password: string;
-  }): Promise<ApiResponse<{ user: User; token: string }> | { redirectToRegister: boolean }> {
+  }): Promise<any> {
+    // El backend espera 'correo' en vez de 'email'
+    const payload = { correo: credentials.email, password: credentials.password };
     const response = await fetch(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.AUTH_LOGIN}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(credentials)
+      body: JSON.stringify(payload)
     });
-    const data = await handleApiResponse(response);
-    // Guardar token automáticamente
+    const data = await response.json();
+    // Si el backend responde con access_token y token_type
+    if (data.access_token) {
+      localStorage.setItem('noox_token', String(data.access_token));
+      // Opcional: puedes pedir el perfil aquí si lo necesitas
+      return {
+        success: true,
+        token: data.access_token,
+        user: null // El contexto pedirá el perfil luego
+      };
+    }
+    // Si el backend responde con el formato anterior
     if (data.success && data.token) {
       localStorage.setItem('noox_token', String(data.token));
       localStorage.setItem('noox_user', JSON.stringify(data.user));
+      return data;
     }
-    return data;
+    // Si requiere registro
+    if (data.redirectToRegister) {
+      return { redirectToRegister: true };
+    }
+    // Error
+    return { success: false, message: data.message || 'Error en el login' };
   }
 
   // Login facial

@@ -46,7 +46,7 @@ def analytics_insights(db: Session = Depends(get_db), user=Depends(get_current_u
         return [{"message": "fail", "data": "No hay datos suficientes"}]
 
     total_gastos = sum([float(r.total) for r in gastos_por_mes])
-    porcentaje = round((cat.total / total_gastos) * 100, 1) if total_gastos else 0.0
+    porcentaje = round((float(cat.total) / float(total_gastos)) * 100, 1) if total_gastos else 0.0
 
     return [
         {
