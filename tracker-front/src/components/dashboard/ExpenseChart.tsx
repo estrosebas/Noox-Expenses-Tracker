@@ -94,7 +94,7 @@ export const ExpenseChart: React.FC = () => {
         position: 'top' as const,
         labels: {
           color: '#D1D5DB',
-          font: { size: 12, weight: '500' },
+        font: { size: 12, weight: 'bold' as 'bold' },
           usePointStyle: true,
           pointStyle: 'circle'
         }

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip as ChartTooltip, Legend as ChartLegend } from 'chart.js';
 import './categoryBreakdown.css';
+import './CategoryBreakdownGrid.css';
 
 ChartJS.register(ArcElement, ChartTooltip, ChartLegend);
 
@@ -103,25 +104,27 @@ export const CategoryBreakdown: React.FC = () => {
           <Doughnut data={data} options={options} />
         </div>
 
-        <div className="category-list">
-          {categories.map((category: any, index: number) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.3, delay: 0.4 + index * 0.1 }}
-              className="category-item"
-            >
-              <div className="category-info">
-                <div className="category-dot" style={{ backgroundColor: category.color }} />
-                <span className="category-name">{category.name}</span>
-              </div>
-              <div className="category-stats">
-                <p className="amount">S/ {category.amount.toLocaleString()}</p>
-                <p className="percentage">{category.percentage}%</p>
-              </div>
-            </motion.div>
-          ))}
+        <div className="category-list-grid-wrapper">
+          <div className="category-list-grid">
+            {categories.map((category: any, index: number) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3, delay: 0.4 + index * 0.1 }}
+                className="category-item-grid"
+              >
+                <div className="category-info-grid">
+                  <div className="category-dot" style={{ backgroundColor: category.color }} />
+                  <span className="category-name-grid" title={category.name}>{category.name}</span>
+                </div>
+                <div className="category-stats-grid">
+                  <p className="amount-grid">S/ {category.amount.toLocaleString()}</p>
+                  <p className="percentage-grid">{category.percentage}%</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     </motion.div>

@@ -5,11 +5,6 @@ import {
   User, 
   Mail, 
   Bell, 
-  Shield, 
-  Palette, 
-  Database,
-  Download,
-  Trash2,
   Save,
   Phone,
   DollarSign
@@ -19,18 +14,12 @@ import './Settings.css';
 export const Settings: React.FC = () => {
   const [activeTab, setActiveTab] = useState('profile');
   const [notifications, setNotifications] = useState({
-    email: true,
-    push: false,
-    weekly: true,
-    monthly: true
+    email: true
   });
 
   const tabs = [
     { id: 'profile', label: 'Perfil', icon: User },
-    { id: 'notifications', label: 'Notificaciones', icon: Bell },
-    { id: 'security', label: 'Seguridad', icon: Shield },
-    { id: 'appearance', label: 'Apariencia', icon: Palette },
-    { id: 'data', label: 'Datos', icon: Database }
+    { id: 'notifications', label: 'Notificaciones', icon: Bell }
   ];
 
   const renderTabContent = () => {
@@ -110,135 +99,9 @@ export const Settings: React.FC = () => {
                 <span className="settings-toggle-slider"></span>
               </label>
             </div>
-
-            <div className="settings-notification-item">
-              <div className="settings-notification-info">
-                <h4>Notificaciones push</h4>
-                <p>Alertas instantáneas en tu dispositivo</p>
-              </div>
-              <label className="settings-toggle">
-                <input
-                  type="checkbox"
-                  checked={notifications.push}
-                  onChange={(e) => setNotifications({...notifications, push: e.target.checked})}
-                />
-                <span className="settings-toggle-slider"></span>
-              </label>
-            </div>
-
-            <div className="settings-notification-item">
-              <div className="settings-notification-info">
-                <h4>Reporte semanal</h4>
-                <p>Resumen de gastos cada semana</p>
-              </div>
-              <label className="settings-toggle">
-                <input
-                  type="checkbox"
-                  checked={notifications.weekly}
-                  onChange={(e) => setNotifications({...notifications, weekly: e.target.checked})}
-                />
-                <span className="settings-toggle-slider"></span>
-              </label>
-            </div>
-
-            <div className="settings-notification-item">
-              <div className="settings-notification-info">
-                <h4>Reporte mensual</h4>
-                <p>Análisis completo cada mes</p>
-              </div>
-              <label className="settings-toggle">
-                <input
-                  type="checkbox"
-                  checked={notifications.monthly}
-                  onChange={(e) => setNotifications({...notifications, monthly: e.target.checked})}
-                />
-                <span className="settings-toggle-slider"></span>
-              </label>
-            </div>
           </div>
         );
 
-      case 'security':
-        return (
-          <div className="settings-security-container">
-            <div className="settings-security-item">
-              <h4>Cambiar contraseña</h4>
-              <div>
-                <input
-                  type="password"
-                  placeholder="Contraseña actual"
-                  className="settings-security-input"
-                />
-                <input
-                  type="password"
-                  placeholder="Nueva contraseña"
-                  className="settings-security-input"
-                />
-                <input
-                  type="password"
-                  placeholder="Confirmar nueva contraseña"
-                  className="settings-security-input"
-                />
-              </div>
-            </div>
-
-            <div className="settings-security-item">
-              <h4>Autenticación de dos factores</h4>
-              <p>Añade una capa extra de seguridad a tu cuenta</p>
-              <button className="settings-button">
-                Configurar 2FA
-              </button>
-            </div>
-
-            <div className="settings-security-item">
-              <h4>Sesiones activas</h4>
-              <div className="settings-session-list">
-                <div className="settings-session-item">
-                  <div className="settings-session-info">
-                    <p>Chrome en Windows</p>
-                    <p className="settings-session-time">Última actividad: hace 2 minutos</p>
-                  </div>
-                  <span className="settings-session-status">Actual</span>
-                </div>
-                <div className="settings-session-item">
-                  <div className="settings-session-info">
-                    <p>Safari en iPhone</p>
-                    <p className="settings-session-time">Última actividad: hace 2 horas</p>
-                  </div>
-                  <button className="settings-session-close">Cerrar</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        );
-
-      case 'data':
-        return (
-          <div className="settings-data-container">
-            <div className="settings-security-item">
-              <h4>Exportar datos</h4>
-              <p>Descarga una copia de todos tus datos financieros</p>
-              <button className="settings-button">
-                <Download className="settings-nav-icon-mobile" />
-                <span>Exportar datos</span>
-              </button>
-            </div>
-
-            <div className="settings-danger-zone">
-              <h4>Zona de peligro</h4>
-              <p>Estas acciones son irreversibles. Procede con precaución.</p>
-              <div className="settings-danger-buttons">
-                <button className="settings-button settings-button-danger">
-                  <Trash2 className="settings-nav-icon-mobile" />
-                  <span>Eliminar todos los datos</span>
-                </button>
-                <button className="settings-button settings-button-danger">
-                  Eliminar cuenta
-                </button>
-              </div>
-            </div>
-          </div>
-        );
 
       default:
         return (

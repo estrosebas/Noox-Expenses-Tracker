@@ -99,21 +99,34 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       if (typeof response === 'object' && 'success' in response && response.success && response.token) {
         localStorage.setItem('noox_token', String(response.token));
         // Si el usuario viene en la respuesta, lo seteamos; si no, lo pedimos al backend
-        if (response.user) {
-          setUser(response.user);
-        } else {
-          // Pedir perfil al backend
-          try {
-            const profileResp = await UserService.getCurrentProfile();
-            if (profileResp.success && profileResp.user) {
-              setUser(profileResp.user);
-            } else {
-              setUser(null);
-            }
-          } catch (e) {
+      if (response.user) {
+        // Mapear usuario si es necesario
+        const mappedUser = {
+          ...response.user,
+          name: response.user.name || `${response.user.nombre || ''} ${response.user.apellido || ''}`.trim(),
+          email: response.user.email || response.user.correo,
+          profile_img_url: response.user.profile_img_url
+        };
+        setUser(mappedUser);
+      } else {
+        // Pedir perfil al backend
+        try {
+          const profileResp = await UserService.getCurrentProfile();
+          if (profileResp && profileResp.id) {
+            const mappedUser = {
+              ...profileResp,
+              name: profileResp.name || `${profileResp.nombre || ''} ${profileResp.apellido || ''}`.trim(),
+              email: profileResp.email || profileResp.correo,
+              profile_img_url: profileResp.profile_img_url
+            };
+            setUser(mappedUser);
+          } else {
             setUser(null);
           }
+        } catch (e) {
+          setUser(null);
         }
+      }
         setIsLoading(false);
         return true;
       } else {
@@ -272,9 +285,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const refreshProfile = async () => {
     try {
-      const response = await UserService.getCurrentProfile();
-      if (response.success && response.data) {
-        setUser(response.data);
+      const user = await UserService.getCurrentProfile();
+      if (user && user.id) {
+        const mappedUser = {
+          ...user,
+          name: user.name || `${user.nombre || ''} ${user.apellido || ''}`.trim(),
+          email: user.email || user.correo,
+          profile_img_url: user.profile_img_url
+        };
+        setUser(mappedUser);
       }
     } catch (error) {
       console.error('Error refreshing profile:', error);

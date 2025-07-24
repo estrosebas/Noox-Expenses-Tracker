@@ -4,13 +4,32 @@ import type { ApiResponse, User } from './api';
 export class UserService {
   
   // Obtener perfil del usuario actual
-  static async getCurrentProfile(): Promise<ApiResponse<User>> {
+  static async getCurrentProfile(): Promise<User> {
     const response = await fetch(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.USER_PROFILE}`, {
       method: 'GET',
       headers: getAuthHeaders()
     });
-    
-    return handleApiResponse(response);
+    const apiResp = await handleApiResponse(response);
+    // Si el backend retorna el usuario como objeto raíz
+    let user: User | undefined;
+    if (apiResp && typeof apiResp === 'object' && 'id' in apiResp) {
+      user = apiResp as User;
+    } else if (apiResp && apiResp.user && typeof apiResp.user === 'object' && 'id' in apiResp.user) {
+      user = apiResp.user as User;
+    }
+    console.log('[UserService] getCurrentProfile raw response:', apiResp);
+    if (user && user.id) {
+      const mappedUser: User = {
+        ...user,
+        name: `${user.nombre || ''} ${user.apellido || ''}`.trim(),
+        email: user.correo,
+        profile_img_url: user.profile_img_url
+      };
+      console.log('[UserService] getCurrentProfile mappedUser:', mappedUser);
+      localStorage.setItem('noox_user', JSON.stringify(mappedUser));
+      return mappedUser;
+    }
+    throw new Error('No user found in profile response');
   }
 
   // Actualizar perfil del usuario actual
@@ -26,14 +45,18 @@ export class UserService {
       headers: getAuthHeaders(),
       body: JSON.stringify(userData)
     });
-    
     const data = await handleApiResponse(response);
-    
-    // Actualizar datos del usuario en localStorage si es exitoso
+    // Actualizar datos del usuario en localStorage si es exitoso y mapear formato
     if (data.success && data.user) {
-      localStorage.setItem('noox_user', JSON.stringify(data.user));
+      const mappedUser = {
+        ...data.user,
+        name: `${data.user.nombre || ''} ${data.user.apellido || ''}`.trim(),
+        email: data.user.correo,
+        profile_img_url: data.user.profile_img_url
+      };
+      localStorage.setItem('noox_user', JSON.stringify(mappedUser));
+      data.user = mappedUser;
     }
-    
     return data;
   }
 
@@ -74,14 +97,18 @@ export class UserService {
       headers: getAuthHeaders(),
       body: JSON.stringify({ base64imageprofile: base64Image })
     });
-    
     const data = await handleApiResponse(response);
-    
-    // Actualizar datos del usuario en localStorage si es exitoso
+    // Actualizar datos del usuario en localStorage si es exitoso y mapear formato
     if (data.success && data.user) {
-      localStorage.setItem('noox_user', JSON.stringify(data.user));
+      const mappedUser = {
+        ...data.user,
+        name: `${data.user.nombre || ''} ${data.user.apellido || ''}`.trim(),
+        email: data.user.correo,
+        profile_img_url: data.user.profile_img_url
+      };
+      localStorage.setItem('noox_user', JSON.stringify(mappedUser));
+      data.user = mappedUser;
     }
-    
     return data;
   }
 

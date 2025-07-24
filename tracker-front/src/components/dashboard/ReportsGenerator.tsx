@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import {
-  Download, Calendar, Filter, PieChart, BarChart3, TrendingUp, FileText, Mail
-} from 'lucide-react';
+import { Calendar, Filter, PieChart, BarChart3, TrendingUp, FileText } from 'lucide-react';
 import './ReportsGenerator.css';
 
 export const ReportsGenerator: React.FC = () => {
+  const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
   const [selectedPeriod, setSelectedPeriod] = useState('monthly');
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [reportType, setReportType] = useState('summary');
+  const [reportUrl, setReportUrl] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const categories = [
     'Alimentación', 'Transporte', 'Entretenimiento',
@@ -24,17 +26,42 @@ export const ReportsGenerator: React.FC = () => {
   const handleCategoryToggle = (category: string) => {
     setSelectedCategories(prev =>
       prev.includes(category)
-        ? prev.filter(c => c !== category)
+        ? prev.filter((c: string) => c !== category)
         : [...prev, category]
     );
   };
 
-  const generateReport = () => {
-    console.log('Generating report:', {
-      type: reportType,
-      period: selectedPeriod,
-      categories: selectedCategories
-    });
+  const generateReport = async () => {
+    setLoading(true);
+    setError(null);
+    setReportUrl(null);
+    try {
+      const token = localStorage.getItem('noox_token') || localStorage.getItem('token');
+      const res = await fetch(`${BASE_URL}/reports/generate`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          type: reportType,
+          period: selectedPeriod,
+          categories: selectedCategories
+        })
+      });
+      const json = await res.json();
+      if (json.success && json.reportUrl) {
+        // Si la url es relativa, prepéndela con BASE_URL
+        const url = json.reportUrl.startsWith('http') ? json.reportUrl : `${BASE_URL}${json.reportUrl}`;
+        setReportUrl(url);
+      } else {
+        setError(json.message || 'No se pudo generar el reporte');
+      }
+    } catch (err: any) {
+      setError(err.message || 'Error desconocido');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -127,35 +154,18 @@ export const ReportsGenerator: React.FC = () => {
           <section className="actions-box">
             <h3 className="preview-title">Acciones</h3>
             <div className="action-buttons">
-              <button className="action-primary" onClick={generateReport}>
-                <FileText className="action-icon" /> Generar Reporte
-              </button>
-              <button className="action-secondary">
-                <Download className="action-icon" /> Descargar PDF
-              </button>
-              <button className="action-secondary">
-                <Mail className="action-icon" /> Enviar por Email
+              <button className="action-primary" onClick={generateReport} disabled={loading}>
+                <FileText className="action-icon" /> {loading ? 'Generando...' : 'Generar Reporte'}
               </button>
             </div>
-          </section>
-
-          <section className="recent-reports">
-            <h3 className="preview-title">Reportes Recientes</h3>
-            <div className="recent-list">
-              {[
-                { name: 'Resumen Diciembre 2024', date: '2025-01-01' },
-                { name: 'Análisis Anual 2024', date: '2024-12-31' },
-                { name: 'Tendencias Q4 2024', date: '2024-12-15' }
-              ].map((r, i) => (
-                <div key={i} className="recent-item">
-                  <div>
-                    <p>{r.name}</p>
-                    <small>{r.date}</small>
-                  </div>
-                  <Download className="action-icon" />
-                </div>
-              ))}
-            </div>
+            {reportUrl && (
+              <div className="report-link">
+                <a href={reportUrl} target="_blank" rel="noopener noreferrer" className="report-download-link">
+                  Descargar PDF generado
+                </a>
+              </div>
+            )}
+            {error && <div className="report-error">{error}</div>}
           </section>
         </div>
       </div>

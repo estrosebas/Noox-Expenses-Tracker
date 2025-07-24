@@ -14,7 +14,7 @@ export const API_CONFIG = {
     
     // Users
     USERS: '/api/users',
-    USER_PROFILE: '/api/users/profile',
+    USER_PROFILE: '/auth/users/profile',
     USER_UPLOAD_FACE: '/api/users/upload-face',
     USER_VERIFY_FACE: '/api/users/verify-face',
     USER_SEARCH: '/api/users/search',
@@ -43,10 +43,17 @@ export const API_CONFIG = {
 // Tipos de datos
 export interface User {
   id: number;
-  firstname: string;
-  lastname: string;
-  email: string;
-  verified: boolean;
+  // Campos originales del backend
+  nombre?: string;
+  apellido?: string;
+  correo?: string;
+  profile_img_url?: string;
+  // Campos legacy/frontend
+  firstname?: string;
+  lastname?: string;
+  email?: string;
+  name?: string;
+  verified?: boolean;
   ProfilePickPath?: string;
   created_at?: string;
   updated_at?: string;

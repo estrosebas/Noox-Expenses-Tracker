@@ -10,6 +10,9 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ setSidebarOpen }) => {
   const { user } = useAuth();
+  // Preferir los campos mapeados, pero usar los originales si no existen
+  const displayName = user?.name || `${user?.nombre || ''} ${user?.apellido || ''}`.trim() || 'Usuario';
+  const displayEmail = user?.email || user?.correo || '';
 
   return (
     <header className="header">
@@ -25,7 +28,7 @@ export const Header: React.FC<HeaderProps> = ({ setSidebarOpen }) => {
 
         <div className="header__titles">
           <h1 className="header__title">Dashboard</h1>
-          <p className="header__subtitle">Bienvenido de nuevo, {user?.name}</p>
+          <p className="header__subtitle">Bienvenido de nuevo, {displayName}</p>
         </div>
       </div>
 
@@ -53,8 +56,8 @@ export const Header: React.FC<HeaderProps> = ({ setSidebarOpen }) => {
             <User className="header__user-icon" />
           </div>
           <div className="header__user-text">
-            <p className="header__user-name">{user?.name}</p>
-            <p className="header__user-email">{user?.email}</p>
+            <p className="header__user-name">{displayName}</p>
+            <p className="header__user-email">{displayEmail}</p>
           </div>
         </div>
       </div>
