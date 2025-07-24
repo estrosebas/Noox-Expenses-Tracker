@@ -3,9 +3,11 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.db.init_db import init_db
 from app.api import auth, providers, transactions, summary, expenses, analytics, reports
+from fastapi.staticfiles import StaticFiles
 
 
 app = FastAPI(title="Noox Expenses Tracker API")
+app.mount("/uploads", StaticFiles(directory="app/uploads"), name="uploads")
 
 # Configuración de CORS
 app.add_middleware(

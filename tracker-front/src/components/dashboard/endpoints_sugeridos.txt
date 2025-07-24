@@ -73,6 +73,7 @@ Endpoint: GET /api/analytics/insights
 
 6. ReportsGenerator
 # Genera reportes financieros personalizados según filtros y preferencias del usuario
+**COMPLETADO reportes**
 Endpoint: POST /api/reports/generate
   - Middleware: JWT Auth
   - Body example:
@@ -80,10 +81,6 @@ Endpoint: POST /api/reports/generate
   - Response example:
     { "success": true, "reportUrl": "/reports/123.pdf" }
 
-
-
-# Header
-# Solo se puede implementar el perfil y búsqueda de transacciones
 **COMPLETADO PROFILE**
 # Devuelve los datos del usuario autenticado
 Endpoint: GET /api/users/profile
