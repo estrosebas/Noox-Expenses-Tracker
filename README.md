@@ -26,7 +26,7 @@ Sistema completo de gestión de gastos personales con autenticación facial, cha
 
 ### 1. Clonar el repositorio
 ```bash
-git clone https://github.com/estrosebas/nooxexpensestracker.git
+git clone https://github.com/estrosebas/Noox-Expenses-Tracker
 cd nooxexpensestracker
 ```
 
