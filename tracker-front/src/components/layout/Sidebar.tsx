@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   LayoutDashboard,
@@ -28,10 +29,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
 }) => {
 
   const { logout } = useAuth();
+  const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.clear();
     logout();
-    window.location.href = '/login';
+    navigate('/login');
   };
 
   const menuItems = [
