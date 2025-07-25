@@ -26,7 +26,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
   isOpen,
   setIsOpen
 }) => {
+
   const { logout } = useAuth();
+  const handleLogout = () => {
+    localStorage.clear();
+    logout();
+    window.location.href = '/login';
+  };
 
   const menuItems = [
     { id: 'overview', label: 'Resumen', icon: LayoutDashboard },
@@ -78,7 +84,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
         {/* Footer */}
         <div className="sidebar__footer">
-          <button className="sidebar__nav-link logout" onClick={logout}>
+          <button className="sidebar__nav-link logout" onClick={handleLogout}>
             <LogOut className="sidebar__nav-icon" />
             <span className="sidebar__nav-text">Cerrar Sesión</span>
           </button>

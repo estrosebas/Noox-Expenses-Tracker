@@ -7,8 +7,8 @@ import './FaceLoginPage.css';
 export const FaceLoginPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { loginWithFace } = useAuth();
-  const [isProcessing, setIsProcessing] = useState(false);
+  const { } = useAuth();
+  const [, ] = useState(false);
   
   // Get email from query param if available
   const params = new URLSearchParams(location.search);

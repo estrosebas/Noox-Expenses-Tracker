@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle, Send, X, Bot, User } from 'lucide-react';
@@ -22,7 +23,8 @@ export const Chatbot: React.FC = () => {
     }
   ]);
 
-  const handleSend = () => {
+
+  const handleSend = async () => {
     if (input.trim()) {
       const userMessage: Message = {
         id: messages.length + 1,
@@ -33,29 +35,35 @@ export const Chatbot: React.FC = () => {
       setMessages(prev => [...prev, userMessage]);
       setInput('');
 
-      setTimeout(() => {
+      // Llama al endpoint de IA
+      try {
+        const token = localStorage.getItem('noox_token') || localStorage.getItem('token');
+        const res = await fetch('http://localhost:8000/summary/monthly-ai', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ user_message: userMessage.text })
+        });
+        const json = await res.json();
         const botResponse: Message = {
           id: messages.length + 2,
-          text: getBotResponse(input),
+          text: json.success ? json.message : 'Hubo un error al obtener la respuesta de la IA.',
           sender: 'bot',
           timestamp: new Date()
         };
         setMessages(prev => [...prev, botResponse]);
-      }, 1000);
+      } catch (err) {
+        const botResponse: Message = {
+          id: messages.length + 2,
+          text: 'Error de conexión con el asistente IA.',
+          sender: 'bot',
+          timestamp: new Date()
+        };
+        setMessages(prev => [...prev, botResponse]);
+      }
     }
-  };
-
-  const getBotResponse = (input: string): string => {
-    const lower = input.toLowerCase();
-    if (lower.includes('gasto') || lower.includes('dinero'))
-      return 'Este mes has gastado S/ 2,450. Tu categoría principal es alimentación con S/ 850.';
-    if (lower.includes('ahorro') || lower.includes('ahorrar'))
-      return 'Has ahorrado S/ 1,750 este mes. ¿Quieres establecer una meta automática?';
-    if (lower.includes('presupuesto'))
-      return 'Tu presupuesto mensual es de S/ 3,300 y has usado el 74%.';
-    if (lower.includes('reporte') || lower.includes('informe'))
-      return 'Puedo generar reportes de gastos, tendencias y comparaciones.';
-    return 'Puedo ayudarte con información financiera personalizada. ¿Qué necesitas?';
   };
 
   return (
